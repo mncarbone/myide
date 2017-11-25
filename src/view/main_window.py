@@ -108,7 +108,6 @@ class MainWindow:
             else:
                 self.saveFile(self.fileName, self.ui.textEdit.text())
                 self.setCurrentFile(self.fileName)
-                self.setCurrentPath(os.path.dirname(self.fileName))
         except Exception as e:
             QtWidgets.QMessageBox.critical(self.ui, "Error", str(e))
 
