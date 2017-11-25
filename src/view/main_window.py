@@ -154,14 +154,14 @@ class MainWindow:
             info = self.fileInfo(index);
             if info.isFile():
                 if info.suffix() == "py":
-                    return QtGui.QPixmap("../resources/icons/page_white_text.png")
+                    return QtGui.QPixmap(os.getcwd() + "/resources/images/icons/page_white_text.png")
                 elif info.suffix() == "ui":
-                    return QtGui.QPixmap("../resources/icons/application_form.png")
+                    return QtGui.QPixmap(os.getcwd() + "/resources/images/icons/application_form.png")
                 elif info.suffix() in ['png', 'jpg', 'gif']:
                     img = QtGui.QPixmap(info.filePath())
                     return img.scaled(16,16)
                 else:
-                    return QtGui.QPixmap("../resources/icons/page_white.png")
+                    return QtGui.QPixmap(os.getcwd() + "/resources/images/icons/page_white.png")
         return QtWidgets.QFileSystemModel.data(self, index, role);
 
     def setCurrentPath(self, path):
