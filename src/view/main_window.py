@@ -6,7 +6,8 @@ import builtins, keyword
 
 class MainWindow:
 
-    def __init__(self):
+    def __init__(self, app):
+        self.app = app
         self.ui = uic.loadUi(os.getcwd() + "/resources/ui/main_window.ui")
         self.runnerPath = 'python' #'idle -i -r'
         self.uiEditorPath = 'designer'
@@ -117,7 +118,7 @@ class MainWindow:
         file.close()
 
     def openUiFile(self, fileName):
-        self.process = QtCore.QProcess(self)
+        self.process = QtCore.QProcess(self.app)
         self.process.start(self.uiEditorPath + ' "' + fileName + '"')
 
     def openImgFile(self, fileName):
@@ -176,7 +177,7 @@ class MainWindow:
 
     def run(self):
         if self.fileName != '':
-            self.process = QtCore.QProcess(self)
+            self.process = QtCore.QProcess(self.app)
             self.process.readyReadStandardOutput.connect(self.stdoutReady)
             self.process.readyReadStandardError.connect(self.stderrReady)
             self.process.start(self.runnerPath + ' "' + self.fileName + '"')
