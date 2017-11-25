@@ -32,10 +32,10 @@ class MainWindow:
         self.ui.actionAbrir.triggered.connect(self.open)
         self.ui.actionBuscar.triggered.connect(self.search)
         self.ui.actionBuscarSiguiente.triggered.connect(self.searchNext)
-        self.ui.searchText.keyPressEvent = lambda event: App.searchKeyPress(self.ui.searchText, event, self)
-        self.ui.treeView.keyPressEvent = lambda event: App.treeKeyPress(self.ui.treeView, event, self)
+        self.ui.searchText.keyPressEvent = lambda event: MainWindow.searchKeyPress(self.ui.searchText, event, self)
+        self.ui.treeView.keyPressEvent = lambda event: MainWindow.treeKeyPress(self.ui.treeView, event, self)
         self.ui.treeView.doubleClicked.connect(self.on_treeView_doubleClicked)
-        
+
 
     def searchKeyPress(text, event, self):
         if (event.key() == QtCore.Qt.Key_Escape):
@@ -46,10 +46,10 @@ class MainWindow:
         if (event.key() == QtCore.Qt.Key_Delete):
             item = tree.selectedIndexes()[0]
             reply = QtWidgets.QMessageBox.question(self.ui, "Eliminar", "¿Desea eliminar?", QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No);
-            if reply == QtWidgets.QMessageBox.Yes:            
+            if reply == QtWidgets.QMessageBox.Yes:
                 path = self.fileSystemModel.filePath(item)
                 if not self.fileSystemModel.remove(item):
-                    QtWidgets.QMessageBox.critical(self.ui, "Error al borrar", "No se pudo borrar el archivo")                
+                    QtWidgets.QMessageBox.critical(self.ui, "Error al borrar", "No se pudo borrar el archivo")
         QtWidgets.QTreeView.keyPressEvent(tree, event)
 
     def search(self):
@@ -119,7 +119,7 @@ class MainWindow:
     def openUiFile(self, fileName):
         self.process = QtCore.QProcess(self)
         self.process.start(self.uiEditorPath + ' "' + fileName + '"')
-        
+
     def openImgFile(self, fileName):
         self.ui.imageLabel.setPixmap(QtGui.QPixmap(fileName))
         self.ui.imagePanel.show()
@@ -157,15 +157,15 @@ class MainWindow:
                 elif info.suffix() == "ui":
                     return QtGui.QPixmap("../resources/icons/application_form.png")
                 elif info.suffix() in ['png', 'jpg', 'gif']:
-                    img = QtGui.QPixmap(info.filePath()) 
+                    img = QtGui.QPixmap(info.filePath())
                     return img.scaled(16,16)
                 else:
-                    return QtGui.QPixmap("../resources/icons/page_white.png")                    
+                    return QtGui.QPixmap("../resources/icons/page_white.png")
         return QtWidgets.QFileSystemModel.data(self, index, role);
 
     def setCurrentPath(self, path):
         self.fileSystemModel = QtWidgets.QFileSystemModel(self.ui.treeView)
-        self.fileSystemModel.data = lambda index, role: App.modelData(self.fileSystemModel, index, role)
+        self.fileSystemModel.data = lambda index, role: MainWindow.modelData(self.fileSystemModel, index, role)
         root = self.fileSystemModel.setRootPath(path)
         self.ui.treeView.setModel(self.fileSystemModel)
         self.ui.treeView.setRootIndex(root)
@@ -250,7 +250,7 @@ class MainWindow:
         self.conectarEventos()
         self.setupEditor()
         self.ui.show()
-        
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication([])
